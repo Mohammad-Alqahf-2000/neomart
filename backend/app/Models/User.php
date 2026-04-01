@@ -6,12 +6,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Role;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
+
+    protected $table = 'users';
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +25,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'image'
     ];
 
     /**
@@ -44,5 +50,32 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_user');
+    }
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'user_id', 'id');
+    }
+    public function store()
+    {
+        return $this->hasOne(Store::class, 'user_id', 'id');
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id', 'id');
+    }
+    public function getPermissionName()
+    {
+        return $this->roles()->flatMap(function ($role) {
+            return $role->permissions->pluck('name');
+        });
+    }
+    public function hasPermissions($permission)
+    {
+        return $this->getPermissionNames()->contains($permission);
     }
 }

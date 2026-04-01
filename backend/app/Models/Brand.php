@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Brand extends Model
+{
+    /** @use HasFactory<\Database\Factories\BrandFactory> */
+    use HasFactory;
+
+    protected $table = 'brands';
+
+    protected $fillable = ['en_name', 'ar_name'];
+
+    protected $guarded = ['created_at', 'updated_at'];
+}

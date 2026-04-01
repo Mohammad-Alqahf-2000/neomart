@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        foreach (config('permissions') as $key => $value) {
+            Gate::define($value['slug'], function ($user, $tragetUser = null) use ($value) {
+                return $user->hasPermission($value['slug']);
+            });
+        }
     }
 }
