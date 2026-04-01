@@ -13,6 +13,19 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::factory()->count(4)->create();
+        $roles = [
+            ['Admin', 'مدير' , 'admin'],
+            ['Client', 'زبون' , 'client'],
+            ['Seller', 'بائع' , 'seller'],
+            ['Assistant', 'مساعد' , 'assistant']
+        ];
+
+        foreach ($roles as $role) {
+            Role::factory()->create([
+                'en_name' => $role[0],
+                'ar_name' => $role[1],
+                'slug' => $role[2],
+            ]);
+        }
     }
 }

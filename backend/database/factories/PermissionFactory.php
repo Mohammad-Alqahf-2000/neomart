@@ -16,11 +16,14 @@ class PermissionFactory extends Factory
      */
     public function definition(): array
     {
-        $action = fake()->randomElement(["create", 'edit', 'delete', 'show']);
-        $table = fake()->randomElement(['users', 'stores', 'products', 'categories', 'sub-categories', '']);/*  */
+        $enAction = fake()->randomElement(["create", 'edit', 'delete', 'show' , 'list']);
+        $arAction = fake()->randomElement(["إنشاء", 'تعديل', 'حذف', 'رؤية' , 'قائمة']);
+        $enTable = fake()->randomElement(['users', 'stores', 'products', 'categories', 'sub-categories', '']);
+        $arTable = fake()->randomElement(['مستخدمين', 'متاجر', 'بضائع', 'أنواع', 'أنواع جزئية', '']);
         return [
-            'name' => $action . '-' . $table . rand(1, 200),
-            'description' => fake()->text()
+            'en_name' => $enAction . ' ' . $enTable . rand(1, 200),
+            'en_name' => $arAction . ' ' . $arTable . rand(1, 200),
+            'slug' => $enAction . '-' . $enTable . rand(1, 200),
         ];
     }
 }
