@@ -11,7 +11,7 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'en_name' => ['required', 'max:50'],
+            'ar_name' => ['required', 'max:50'],
+            'en_description' => ['required', 'min:20'],
+            'ar_description' => ['required', 'min:20']
         ];
     }
 }

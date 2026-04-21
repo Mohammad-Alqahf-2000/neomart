@@ -14,6 +14,14 @@ class PermissionResourse extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "id" => $this->id,
+            "enName" => $this->en_name,
+            "arName" => $this->ar_name,
+            "slug" => $this->slug,
+            "roles" => $this->whenLoaded("roles", function () {
+                return $this->roles->pluck('id');
+            })
+        ];
     }
 }

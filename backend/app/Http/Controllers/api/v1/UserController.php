@@ -7,17 +7,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\v1\LoginUserRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\v1\RegisterUserRequest;
+use App\Http\Resources\v1\RoleResourse;
 use App\Http\Resources\v1\UserResource;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
     public function register(RegisterUserRequest $request)
     {
         $user = User::create($request->validated());
-        $user->roles()->attach(Role::select('id')->where('slug', 'client')->first()->id);
+        $user->roles()->attach(Role::select('id')->where('slug', $request->validated('role'))->first()->id);
         return response()->json(['data' => ["message" => 'register successfully']], 201);
     }
     public function login(LoginUserRequest $request)
@@ -28,7 +30,7 @@ class UserController extends Controller
         $user = User::where('email', $request->email)->FirstOrFail();
         $tokenName = $user->roles[0]->slug;
         $tokenPermissions = $user->roles[0]->permissions->pluck('slug')->toArray();
-        $expirationDate = Carbon::now()->addDays(3);
+        $expirationDate = Carbon::now()->addDays(6);
         $user = $user->createToken($tokenName, $tokenPermissions, $expirationDate);
         return response()->json(['data' => ["token" => $user->plainTextToken, "role" => $user->accessToken->name]], 200);
     }
@@ -37,8 +39,8 @@ class UserController extends Controller
         $request->user()->currentAccessToken()->delete();
         return response()->json(['data' => ["message" => 'Logout successfully']], 200);
     }
-    public function user (Request $request)g
+    public function user(Request $request)
     {
-        return response()->json(['data' => ["user" => $request->user()->currentAccessToken()->tokenable]], 200);
+        return response()->json(['data' => ["user" => new UserResource($request->user()->load("roles")) ]], 200);
     }
 }

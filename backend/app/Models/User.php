@@ -68,14 +68,24 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class, 'user_id', 'id');
     }
-    public function getPermissionName()
+    public function getPermissionSlugs()
     {
-        return $this->roles()->flatMap(function ($role) {
-            return $role->permissions->pluck('name');
-        });
+        $roles = $this->roles()->with('permissions')->get();
+
+        $slugs = [];
+        foreach ($roles as $role) {
+            foreach ($role->permissions as $permission) {
+                $slugs[] = $permission->slug;
+            }
+        }
+        return collect($slugs)->unique()->values();
+
+        // return $this->roles->flatMap(function ($role) {
+        //     return $role->permissions->pluck('slug');
+        // });
     }
     public function hasPermissions($permission)
     {
-        return $this->getPermissionNames()->contains($permission);
+        return $this->getPermissionSlugs()->contains($permission);
     }
 }

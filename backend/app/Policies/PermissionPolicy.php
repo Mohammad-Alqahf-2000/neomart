@@ -13,15 +13,16 @@ class PermissionPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->hasPermissions('permission-list');
     }
+
 
     /**
      * Determine whether the user can view the model.
      */
     public function view(User $user, Permission $permission): bool
     {
-        return false;
+        return $user->hasPermissions('permission-show');
     }
 
     /**

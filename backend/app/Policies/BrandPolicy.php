@@ -13,7 +13,7 @@ class BrandPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->hasPermissions('brand-list');
     }
 
     /**
@@ -21,7 +21,7 @@ class BrandPolicy
      */
     public function view(User $user, Brand $brand): bool
     {
-        return false;
+        return $user->hasPermissions('brand-show');
     }
 
     /**
@@ -29,7 +29,7 @@ class BrandPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->hasPermissions('brand-create');
     }
 
     /**
@@ -37,7 +37,7 @@ class BrandPolicy
      */
     public function update(User $user, Brand $brand): bool
     {
-        return false;
+        return $user->hasPermissions('brand-update');
     }
 
     /**
@@ -45,7 +45,7 @@ class BrandPolicy
      */
     public function delete(User $user, Brand $brand): bool
     {
-        return false;
+        return $user->hasPermissions('brand-delete');
     }
 
     /**
