@@ -6,25 +6,22 @@ use App\Models\Category;
 use App\Http\Requests\v1\StoreCategoryRequest;
 use App\Http\Requests\v1\UpdateCategoryRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\v1\SubCategoryCollection;
-use App\Http\Resources\v1\SubCategoryResource;
+use App\Http\Resources\v1\CategoryCollection;
+use App\Http\Resources\v1\CategoryResource;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Traits\ApiResponseTrait;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    use ApiResponseTrait;
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return $this->success($this->paginateResponse(Category::with('subCategories')->paginated($request->integer('per_page')), CategoryResource::class), 'fetch data successfully');
     }
 
     /**
@@ -32,7 +29,7 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        return $this->success(new CategoryResource(Category::create($request->validated())->load("subCategories")), "created successfully", 201);
     }
 
     /**
@@ -40,15 +37,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        //
+        return $this->success(new CategoryResource($category->load("subCategories")), 'fetch data successfully');
     }
 
     /**
@@ -56,7 +45,8 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $category->update($request->validated());
+        return $this->success(new CategoryResource($category->load("subCategories")), "updated successfully");
     }
 
     /**
@@ -64,6 +54,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return $this->success(new CategoryResource($category->load("subCategories")), "deleted successfully");
     }
 }
