@@ -88,4 +88,10 @@ class User extends Authenticatable
     {
         return $this->getPermissionSlugs()->contains($permission);
     }
+
+    public function assignRole(String $roleSlug): void
+    {
+        $role = Role::where('slug', $roleSlug)->firstOrFail();
+        $this->roles()->syncWithoutDetaching($role->id);
+    }
 }

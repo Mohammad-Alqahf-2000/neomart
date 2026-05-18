@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
-            $table->text('en_description');
-            $table->text('ar_description');
-            $table->string('logo', 255);
+            $table->text('en_description')->nullable();
+            $table->text('ar_description')->nullable();
+            $table->string('logo', 255)->nullable();
             $table->foreignId('user_id')->unique()->constrained('users', 'id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });

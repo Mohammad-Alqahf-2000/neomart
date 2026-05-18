@@ -19,7 +19,7 @@ class UserController extends Controller
     public function register(RegisterUserRequest $request)
     {
         $user = User::create($request->validated());
-        $user->roles()->attach(Role::select('id')->where('slug', $request->validated('role'))->first()->id);
+        $user->assignRole($request->validated('role'));
         return response()->json(['data' => ["message" => 'register successfully']], 201);
     }
     public function login(LoginUserRequest $request)
@@ -32,7 +32,7 @@ class UserController extends Controller
         $tokenPermissions = $user->roles[0]->permissions->pluck('slug')->toArray();
         $expirationDate = Carbon::now()->addDays(6);
         $user = $user->createToken($tokenName, $tokenPermissions, $expirationDate);
-        return response()->json(['data' => ["token" => $user->plainTextToken, "role" => $user->accessToken->name]], 200);
+        return response()->json(['data' => ["token" => $user->plainTextToken, "roles" => $request->user()->roles->pluck("slug")]], 200);
     }
     public function logout(Request $request)
     {

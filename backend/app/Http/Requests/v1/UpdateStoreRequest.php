@@ -11,7 +11,7 @@ class UpdateStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class UpdateStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "name"=>['required',"max:40" , "min:5" , "string"],
+            "en_description"=>['max:255',"min:10","string"],
+            "ar_description"=>['max:255',"min:10","string"],
+            "logo"=>['file'],
         ];
     }
 }

@@ -12,13 +12,13 @@ class Store extends Model
 
     protected $table = 'stores';
 
-    protected $fillable = ['en_name', 'ar_name', 'en_description', 'ar_description', 'logo', 'user_id'];
+    protected $fillable = ['name', 'en_description', 'ar_description', 'logo', 'user_id'];
 
     protected $guarded = ['created_at', 'updated_at'];
 
     public function user()
     {
-        return $this->hasOne(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
     public function orders()
     {
