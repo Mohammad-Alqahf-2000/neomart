@@ -13,7 +13,8 @@ class CategoryPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissions('category-list');
+        // return $user->hasPermissions('category-list');
+        return true;
     }
 
     /**
@@ -21,7 +22,8 @@ class CategoryPolicy
      */
     public function view(User $user, Category $category): bool
     {
-        return $user->hasPermissions('category-show');
+        // return $user->hasPermissions('category-show');
+        return true;
     }
 
     /**

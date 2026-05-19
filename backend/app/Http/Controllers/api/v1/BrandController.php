@@ -2,23 +2,36 @@
 
 namespace App\Http\Controllers\api\v1;
 
+
 use App\Models\Brand;
 use App\Http\Requests\v1\StoreBrandRequest;
 use App\Http\Requests\v1\UpdateBrandRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\v1\BrandCollection;
 use App\Http\Resources\v1\BrandResource;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class BrandController extends Controller
+class BrandController extends Controller implements HasMiddleware
 {
-    use ApiResponseTrait;
-    use AuthorizesRequests;
+    use ApiResponseTrait, AuthorizesRequests;
+
+
+    public static function middleware(){
+        return [
+            new Middleware("permission:brand-create",only:['store']),
+            new Middleware("permission:brand-update",only:['update']),
+            new Middleware("permission:brand-delete",only:['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
+
+
     public function index(Request $request)
     {
         return $this->success($this->paginateResponse(Brand::paginated($request->integer('per_page')), BrandResource::class), "fetch data successfully");
@@ -38,7 +51,6 @@ class BrandController extends Controller
      */
     public function show(Brand $brand)
     {
-        $this->authorize('view', $brand);
         return $this->success(new BrandResource($brand), "fetch data successfully");
     }
     /**

@@ -25,11 +25,11 @@ Route::group(['prefix' => '/v1', 'namespace' => 'App\Http\Controllers\api\v1'], 
     });
 
     // brands
-    Route::get('brands', [BrandController::class, 'index'])->name('brands.index');
+    Route::apiResource('brands', BrandController::class)->only('index', 'show');
     // categories
-    Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::apiResource('categories', CategoryController::class)->only('index', 'show');
     // sub-categories
-    Route::get('sub-categories', [SubCategoryController::class, 'index'])->name('sub-categories.index');
+     Route::apiResource('sub-categories', SubCategoryController::class)->only('index', 'show');
     // stores
     Route::apiResource('stores', StoreController::class)->only('index', 'show');
 
@@ -39,38 +39,23 @@ Route::group(['prefix' => '/v1', 'namespace' => 'App\Http\Controllers\api\v1'], 
 
 
         // ** Admin Routes **
-        Route::middleware('role:admin')->group(function () {
-            // permissions
-            Route::apiResource('permissions', PermissionController::class)->only('index', 'show');
-            // roles
-            Route::apiResource('roles', RoleController::class)->except('create', 'edit');
-            // brands
-            Route::apiResource('brands', BrandController::class)->except('index', 'create', 'edit');
-            // categories
-            Route::apiResource('categories', CategoryController::class)->except('index', 'create', 'edit');
-            // sub-categories
-            Route::apiResource('sub-categories', SubCategoryController::class)->except('index', 'create', 'edit');
-        });
-
-        // ** Seller Routes **
-        Route::middleware('role:seller')->group(function () {
-            //stores
-            Route::apiResource("stores", StoreController::class)->only('update', 'destroy');
-        });
-
-        // ** Assistant Routes **
-        // ** Client Routes **
-        // ** Admin & Seller Routes **
-        // ** Seller & Assistant Routes **
-
-
-        // ** All users **
+        // permissions
+        Route::apiResource('permissions', PermissionController::class)->only('index', 'show');
+        // roles
+        Route::apiResource('roles', RoleController::class)->except('create', 'edit');
+        // brands
+        Route::apiResource('brands', BrandController::class)->only('store', 'update', 'destroy');
+        // categories
+        Route::apiResource('categories', CategoryController::class)->only('store', 'update', 'destroy');
+        // sub-categories
+        Route::apiResource('sub-categories', SubCategoryController::class)->only('store', 'update', 'destroy');
+        //stores
+        Route::apiResource("stores", StoreController::class)->only('update', 'destroy','store');
+        // Route::post("stores", [StoreController::class, 'store'])->name('stores.store');
         // auth routes
         Route::prefix('/auth')->group(function () {
             Route::get('user', [UserController::class, 'user'])->name('users.user');
             Route::post('logout', [UserController::class, 'logout'])->name('users.logout');
         });
-        // stores
-        Route::post("stores", [StoreController::class, 'store'])->name('stores.store');
     });
 });

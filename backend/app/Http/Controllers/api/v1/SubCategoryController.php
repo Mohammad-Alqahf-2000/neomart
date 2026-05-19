@@ -6,16 +6,28 @@ use App\Models\SubCategory;
 use App\Http\Requests\v1\StoreSubCategoryRequest;
 use App\Http\Requests\v1\UpdateSubCategoryRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\v1\SubCategoryCollection;
 use App\Http\Resources\v1\SubCategoryResource;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Override;
 
-class SubCategoryController extends Controller
+class SubCategoryController extends Controller implements HasMiddleware
 {
-    use ApiResponseTrait;
-    use AuthorizesRequests;
+    use ApiResponseTrait, AuthorizesRequests;
+
+    #[Override]
+    public static function middleware()
+    {
+        return [
+            new Middleware('permission:subCategory-create', only: ['store']),
+            new Middleware('permission:subCategory-update', only: ['update']),
+            new Middleware('permission:subCategory-delete', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -37,7 +49,6 @@ class SubCategoryController extends Controller
      */
     public function show(SubCategory $subCategory)
     {
-        $this->authorize('view', $subCategory);
         return $this->success(new SubCategoryResource($subCategory), "fetch data sucessfully");
     }
     /**

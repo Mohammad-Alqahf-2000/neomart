@@ -13,7 +13,8 @@ class BrandPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissions('brand-list');
+        // return $user->hasPermissions('brand-list');
+        return true;
     }
 
     /**
@@ -21,7 +22,8 @@ class BrandPolicy
      */
     public function view(User $user, Brand $brand): bool
     {
-        return $user->hasPermissions('brand-show');
+        // return $user->hasPermissions('brand-show');
+        return true;
     }
 
     /**

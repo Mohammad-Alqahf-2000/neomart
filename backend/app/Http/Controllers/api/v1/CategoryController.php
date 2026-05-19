@@ -6,16 +6,26 @@ use App\Models\Category;
 use App\Http\Requests\v1\StoreCategoryRequest;
 use App\Http\Requests\v1\UpdateCategoryRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\v1\CategoryCollection;
 use App\Http\Resources\v1\CategoryResource;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Override;
 
-class CategoryController extends Controller
+class CategoryController extends Controller implements HasMiddleware
 {
-    use ApiResponseTrait;
-    use AuthorizesRequests;
+    use ApiResponseTrait, AuthorizesRequests;
+
+    public static function middleware()
+    {
+        return [
+            new Middleware("permission:category-create", only: ['store']),
+            new Middleware("permission:category-update", only: ['update']),
+            new Middleware("permission:category-delete", only: ['destroy']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
@@ -29,6 +39,7 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
+        $this->authorize('category-create', Category::class);
         return $this->success(new CategoryResource(Category::create($request->validated())->load("subCategories")), "created successfully", 201);
     }
 
@@ -45,6 +56,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
+        $this->authorize('category-update', $category);
         $category->update($request->validated());
         return $this->success(new CategoryResource($category->load("subCategories")), "updated successfully");
     }
@@ -54,6 +66,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        $this->authorize('category-delete', $category);
         $category->delete();
         return $this->success(new CategoryResource($category->load("subCategories")), "deleted successfully");
     }

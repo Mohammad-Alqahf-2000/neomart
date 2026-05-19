@@ -84,14 +84,21 @@ class User extends Authenticatable
         //     return $role->permissions->pluck('slug');
         // });
     }
-    public function hasPermissions($permission)
+    public function hasPermissions(string $permission)
     {
         return $this->getPermissionSlugs()->contains($permission);
     }
 
-    public function assignRole(String $roleSlug): void
+    public function assignRole(string $roleSlug): void
     {
         $role = Role::where('slug', $roleSlug)->firstOrFail();
         $this->roles()->syncWithoutDetaching($role->id);
+    }
+    
+    public function removeRole(string $roleSlug): void
+    {
+        $role = Role::where('slug', $roleSlug)->firstOrFail();
+
+        $this->roles()->detach($role->id);
     }
 }

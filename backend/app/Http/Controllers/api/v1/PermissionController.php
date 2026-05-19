@@ -8,11 +8,22 @@ use App\Http\Resources\v1\PermissionResourse;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Override;
 
-
-class PermissionController extends Controller
+class PermissionController extends Controller implements HasMiddleware
 {
     use AuthorizesRequests, ApiResponseTrait;
+
+    public static function middleware()
+    {
+        return [
+            new Middleware('permission:permission-list',only:['index']),
+            new Middleware('permission:permission-show',only:['show']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

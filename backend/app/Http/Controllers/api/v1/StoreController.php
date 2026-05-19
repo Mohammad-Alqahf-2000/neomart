@@ -8,17 +8,25 @@ use App\Models\User;
 use App\Http\Requests\v1\StoreStoreRequest;
 use App\Http\Requests\v1\UpdateStoreRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\v1\PermissionCollection;
-use App\Http\Resources\v1\PermissionResourse;
 use App\Http\Resources\v1\StoreResource;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-
-class StoreController extends Controller
+class StoreController extends Controller implements HasMiddleware
 {
     use ApiResponseTrait, AuthorizesRequests;
+
+    public static function middleware()
+    {
+        return [
+            new Middleware('permission:store-create', only: ['store']),
+            new Middleware('permission:store-update', only: ['update']),
+            new Middleware('permission:store-delete', only: ['destroy']),
+        ];
+    }
 
     /**
      * Display a listing of the resource.
@@ -61,18 +69,22 @@ class StoreController extends Controller
         $this->authorize('update', $store);
         if ($request->user()->id == $store->user_id) {
             $store->update($request->validated());
-            return $this->success(new StoreResource($store->load('user')),"update data successfully");
+            return $this->success(new StoreResource($store->load('user')), "update data successfully");
         }
-        return $this->error("Unable to do this",404);
+        return $this->error("Unable to do this", 404);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Store $store)
+    public function destroy(Request $request, Store $store)
     {
-         $this->authorize('delete', $store);
-         $store->delete();
-         return $this->success(new StoreResource($store->load('user')),"delete data successfully");
+        $this->authorize('delete', $store);
+        if ($request->user()->id == $store->user_id) {
+            $request->user()->removeRole('seller');
+            $store->delete();
+            return $this->success(new StoreResource($store->load('user')), "delete data successfully");
+        }
+        return $this->error("Unable to delete others store", 404);
     }
 }

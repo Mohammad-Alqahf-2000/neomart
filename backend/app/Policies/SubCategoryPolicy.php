@@ -13,7 +13,8 @@ class SubCategoryPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissions('subCategory-list');
+        // return $user->hasPermissions('subCategory-list');
+        return true;
     }
 
     /**
@@ -21,7 +22,8 @@ class SubCategoryPolicy
      */
     public function view(User $user, SubCategory $subCategory): bool
     {
-         return $user->hasPermissions('subCategory-show');
+        //  return $user->hasPermissions('subCategory-show');
+        return true;
     }
 
     /**
@@ -29,7 +31,7 @@ class SubCategoryPolicy
      */
     public function create(User $user): bool
     {
-         return $user->hasPermissions('subCategory-create');
+        return $user->hasPermissions('subCategory-create');
     }
 
     /**
@@ -45,7 +47,7 @@ class SubCategoryPolicy
      */
     public function delete(User $user, SubCategory $subCategory): bool
     {
-         return $user->hasPermissions('subCategory-delete');
+        return $user->hasPermissions('subCategory-delete');
     }
 
     /**
