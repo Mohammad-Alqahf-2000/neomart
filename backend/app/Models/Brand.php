@@ -15,4 +15,8 @@ class Brand extends Model
     protected $fillable = ['en_name', 'ar_name'];
 
     protected $guarded = ['created_at', 'updated_at'];
+
+    public function products(){
+        return $this->hasMany(Product::class,'brand_id',"id");
+    }
 }

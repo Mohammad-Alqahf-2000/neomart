@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\AvailabilityEnum;
+use App\Enums\TypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,8 +18,27 @@ class Product extends Model
 
     protected $guarded = ['created_at', 'updated_at'];
 
-    public function images ()
+    protected $casts = [
+        "stock" => "integer",
+        "price" => "decimal:2",
+        "type" => TypeEnum::class,
+        "availability" => AvailabilityEnum::class,
+    ];
+
+    public function images()
     {
-        return $this->hasMany(Image::class, 'product_id','id');
+        return $this->hasMany(Image::class, 'product_id', 'id');
+    }
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, "brand_id", "id");
+    }
+    public function subCategory()
+    {
+        return $this->belongsTo(SubCategory::class, "sub_category_id", "id");
+    }
+    public function store()
+    {
+        return $this->belongsTo(Store::class, "store_id", "id");
     }
 }

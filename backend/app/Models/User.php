@@ -94,7 +94,7 @@ class User extends Authenticatable
         $role = Role::where('slug', $roleSlug)->firstOrFail();
         $this->roles()->syncWithoutDetaching($role->id);
     }
-    
+
     public function removeRole(string $roleSlug): void
     {
         $role = Role::where('slug', $roleSlug)->firstOrFail();

@@ -22,6 +22,10 @@ class Store extends Model
     }
     public function orders()
     {
-        return $this->belongsToMany(Order::class , 'store_order');
+        return $this->belongsToMany(Order::class, 'store_order');
+    }
+    public function products()
+    {
+        return $this->hasMany(Product::class, "store_id", 'id');
     }
 }
