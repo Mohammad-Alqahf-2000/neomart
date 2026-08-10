@@ -14,10 +14,10 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $roles = [
-            ['Admin', 'مدير' , 'admin'],
-            ['Client', 'زبون' , 'client'],
-            ['Seller', 'بائع' , 'seller'],
-            ['Assistant', 'مساعد' , 'assistant']
+            ['Admin', 'مدير', 'admin'],
+            ['Client', 'زبون', 'client'],
+            ['Seller', 'بائع', 'seller'],
+            ['Assistant', 'مساعد', 'assistant']
         ];
 
         foreach ($roles as $role) {
@@ -25,6 +25,7 @@ class RoleSeeder extends Seeder
                 'en_name' => $role[0],
                 'ar_name' => $role[1],
                 'slug' => $role[2],
+                "is_active" => true,
             ]);
         }
     }

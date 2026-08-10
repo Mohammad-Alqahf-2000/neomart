@@ -12,6 +12,13 @@ class StoreResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    protected bool $showTaxes;
+    public function __construct($resource, bool $showTaxes = true)
+    {
+        parent::__construct($resource);
+        $this->showTaxes = $showTaxes;
+    }
+
     public function toArray(Request $request): array
     {
         return [
@@ -19,6 +26,8 @@ class StoreResource extends JsonResource
             "name" => $this->name,
             "enDescription" => $this->en_description,
             "arDescription" => $this->ar_description,
+            "taxRate" => $this->when($this->showTaxes ?? false, $this->tax_rate),
+            "taxType" => $this->when($this->showTaxes ?? false, $this->tax_type),
             "logo" => $this->logo,
             "user" => $this->whenLoaded("user", fn() => new UserResource($this->user)),
         ];

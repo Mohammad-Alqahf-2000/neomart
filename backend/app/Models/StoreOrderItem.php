@@ -2,24 +2,22 @@
 
 namespace App\Models;
 
-use App\Enums\PaymentStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Payment extends Model
+class StoreOrderItem extends Model
 {
-    /** @use HasFactory<\Database\Factories\PaymentFactory> */
+    /** @use HasFactory<\Database\Factories\OrderItemFactory> */
     use HasFactory;
 
-    protected $table = 'payments';
+    protected $table = 'store_order_items';
 
-    protected $fillable = ['amount', 'method', 'status', 'transaction_id', 'store_order_id'];
+    protected $fillable = ['product_id', 'product_name', 'product_price', 'quantity', 'store_order_id'];
 
     protected $guarded = ['created_at', 'updated_at'];
 
     protected $casts = [
-        "amount" => "decimal:2",
-        "status" => PaymentStatusEnum::class,
+        'quantity' => "integer",
     ];
 
     public function storeOrder()

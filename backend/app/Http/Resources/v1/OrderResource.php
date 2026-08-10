@@ -14,6 +14,14 @@ class OrderResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "id" => $this->id,
+            "status" => $this->status,
+            "totalAmount" => $this->total_amount,
+            "note" => $this->note,
+            "user" => $this->whenLoaded('user', fn() => new UserResource($this->user)),
+            "storeOrders" => $this->whenLoaded('storeOrders', fn() => StoreOrderResource::collection($this->storeOrders)),
+            // "store" => $this->whenLoaded("stores", fn() =>  StoreResource::collection($this->stores)),
+        ];
     }
 }

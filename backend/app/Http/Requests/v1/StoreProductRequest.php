@@ -12,9 +12,10 @@ class StoreProductRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
+    // To make type lowercase like ("new" , 'used')
     protected function prepareForValidation(): void
     {
-        $this->merge(['type' => strtoupper($this->type)]);
+        $this->merge(['type' => strtolower($this->type)]);
     }
     public function authorize(): bool
     {

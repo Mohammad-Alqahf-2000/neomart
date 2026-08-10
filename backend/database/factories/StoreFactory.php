@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\StoreOrderTaxTypeEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
 
@@ -24,6 +25,9 @@ class StoreFactory extends Factory
             'name' => fake()->userName() . ' Market',
             'en_description' => fake()->text(),
             'ar_description' => rand(0, 1) == 0 ? $arabicText1 : $arabicText2,
+            "shipping_cost" => fake()->randomFloat(1, 0, 9999),
+            "tax_rate" => fake()->randomFloat(1, 0, 9999),
+            "tax_type" => fake()->randomElement(StoreOrderTaxTypeEnum::cases()),
             'logo' => fake()->imageUrl(),
             'user_id' => User::factory(),
         ];

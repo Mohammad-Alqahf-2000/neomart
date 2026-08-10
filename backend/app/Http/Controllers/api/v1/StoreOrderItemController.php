@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\api\v1;
 
-use App\Models\OrderItem;
-use App\Http\Requests\v1\StoreOrderItemRequest;
-use App\Http\Requests\v1\UpdateOrderItemRequest;
+use App\Models\StoreOrderItem;
+use App\Http\Requests\v1\StoreStoreOrderItemRequest;
+use App\Http\Requests\v1\UpdateStoreOrderItemRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\v1\OrderItemCollection;
-use App\Http\Resources\v1\OrderItemResourse;
+use App\Http\Resources\v1\StoreOrderItemCollection;
+use App\Http\Resources\v1\SotreOrderItemResourse;
 
-class OrderItemController extends Controller
+class StoreOrderItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,7 +30,7 @@ class OrderItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreOrderItemRequest $request)
+    public function store(StoreStoreOrderItemRequest $request)
     {
         //
     }
@@ -38,7 +38,7 @@ class OrderItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(OrderItem $orderItem)
+    public function show(StoreOrderItem $orderItem)
     {
         //
     }
@@ -46,7 +46,7 @@ class OrderItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(OrderItem $orderItem)
+    public function edit(StoreOrderItem $orderItem)
     {
         //
     }
@@ -54,7 +54,7 @@ class OrderItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOrderItemRequest $request, OrderItem $orderItem)
+    public function update(UpdateStoreOrderItemRequest $request, StoreOrderItem $orderItem)
     {
         //
     }
@@ -62,7 +62,7 @@ class OrderItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(OrderItem $orderItem)
+    public function destroy(StoreOrderItem $orderItem)
     {
         //
     }

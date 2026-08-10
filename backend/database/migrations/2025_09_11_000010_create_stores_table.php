@@ -17,8 +17,12 @@ return new class extends Migration
             $table->text('en_description')->nullable();
             $table->text('ar_description')->nullable();
             $table->string('logo', 255)->nullable();
+            $table->decimal("shipping_cost", 6, 2)->default(0);
+            $table->decimal("tax_rate", 10, 2)->default(0);
+            $table->string('tax_type')->default('value')->comment("percentage or value");
             $table->foreignId('user_id')->unique()->constrained('users', 'id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

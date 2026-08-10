@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Enums\AvailabilityEnum;
-use App\Enums\TypeEnum;
+use App\Enums\ProductAvailabilityEnum;
+use App\Enums\ProductTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,8 +21,8 @@ class Product extends Model
     protected $casts = [
         "stock" => "integer",
         "price" => "decimal:2",
-        "type" => TypeEnum::class,
-        "availability" => AvailabilityEnum::class,
+        "type" => ProductTypeEnum::class,
+        "availability" => ProductAvailabilityEnum::class,
     ];
 
     public function images()

@@ -16,7 +16,9 @@ return new class extends Migration
             $table->text('message');
             $table->string('type', 150);
             $table->boolean('is_read');
-            $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->constrained('users', 'id')->restrictOnDelete();
+            $table->foreignId('product_id')->constrained('products', 'id')->cascadeOnDelete();
+            $table->foreignId('store_order_item_id')->constrained('store_order_items', 'id')->restrictOnDelete();
             $table->timestamps();
         });
     }

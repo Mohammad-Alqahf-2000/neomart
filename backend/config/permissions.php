@@ -51,6 +51,13 @@ return [
     'order-update' => ['en_name' => 'order update', 'ar_name' => 'تعديل الطلب', 'slug' => 'order-update'],
     'order-delete' => ['en_name' => 'order delete', 'ar_name' => 'حذف الطلب', 'slug' => 'order-delete'],
 
+    'storeOrder-list' => ['en_name' => 'store orders list', 'ar_name' => 'قائمة طلبات المتجر', 'slug' => 'storeOrder-list'],
+    'storeOrder-show' => ['en_name' => 'store order show', 'ar_name' => 'رؤية طلب المتجر', 'slug' => 'storeOrder-show'],
+    'storeOrder-create' => ['en_name' => 'store order create', 'ar_name' => 'إنشاء طلب متجر', 'slug' => 'storeOrder-create'],
+    'storeOrder-update' => ['en_name' => 'store order update', 'ar_name' => 'تعديل طلب متجر', 'slug' => 'storeOrder-update'],
+    'storeOrder-delete' => ['en_name' => 'store order delete', 'ar_name' => 'حذف طلب كتجر', 'slug' => 'storeOrder-delete'],
+
+
     'orderItem-list' => ['en_name' => 'order items list', 'ar_name' => 'قائمة عناصر الطلب', 'slug' => 'orderItem-list'],
     'orderItem-show' => ['en_name' => 'order item show', 'ar_name' => 'رؤية عنصر الطلب', 'slug' => 'orderItem-show'],
     'orderItem-create' => ['en_name' => 'order item create', 'ar_name' => 'إنشاء عنصر طلب', 'slug' => 'orderItem-create'],

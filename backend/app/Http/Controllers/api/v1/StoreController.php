@@ -33,6 +33,9 @@ class StoreController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
+        // If want to hide taxes fields
+        // $stores = Store::with("user")->paginated($request->integer('per_page'));
+        // return $this->success($this->paginateResponse($stores, fn($store) => new StoreResource($store, false)), 'fetch data succssfully');
         return $this->success($this->paginateResponse(Store::with("user")->paginated($request->integer('per_page')), StoreResource::class), 'fetch data succssfully');
     }
     /**

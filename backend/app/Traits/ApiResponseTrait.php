@@ -14,10 +14,17 @@ trait ApiResponseTrait
     {
         return response()->json(['status' => false, 'message' => $message, 'errors' => $errors], $code);
     }
-    public function paginateResponse(LengthAwarePaginator $paginator, ?string $resource = null): array
+    public function paginateResponse(LengthAwarePaginator $paginator, string|callable|null $resource = null): array
     {
+
+        if (is_callable($resource)) {
+            // If it's a callback function, use it to map the items
+            $items = $paginator->getCollection()->map($resource);
+        } else {
+            $items = $resource ? $resource::collection($paginator) : $paginator->items();
+        }
         return [
-            'items' => $resource ? $resource::collection($paginator) : $paginator->items(),
+            'items' => $items,
             'pagination' => [
                 'current_page' => $paginator->currentPage(),
                 'last_page' => $paginator->lastPage(),

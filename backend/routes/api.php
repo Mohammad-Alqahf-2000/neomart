@@ -7,6 +7,7 @@ use App\Http\Controllers\api\v1\PermissionController;
 use App\Http\Controllers\api\v1\ProductController;
 use App\Http\Controllers\api\v1\RoleController;
 use App\Http\Controllers\api\v1\StoreController;
+use App\Http\Controllers\api\v1\StoreOrderController;
 use App\Http\Controllers\api\v1\SubCategoryController;
 use App\Http\Controllers\api\v1\UserController;
 use Illuminate\Http\Request;
@@ -63,6 +64,14 @@ Route::group(['prefix' => '/v1', 'namespace' => 'App\Http\Controllers\api\v1'], 
         //proudct
         Route::apiResource("products", ProductController::class)->only('store', 'update', 'destroy');
         // orders
-        Route::apiResource('orders', OrderController::class)->except('create','edit');
+        Route::prefix("orders")->group(function () {
+            Route::apiResource('', OrderController::class)->except('create', 'edit', 'destory');
+            Route::patch('/{order}/cancel', [OrderController::class, 'cancel'])->name("orders.cancel");
+            Route::get("/user-own-orders", [OrderController::class, 'userOwnOrders'])->name("orders.userOwnOrders");
+        });
+        // store orders
+        Route::prefix('storeOrders')->group(function () {
+            Route::get('', [StoreOrderController::class, 'index'])->name('storeOrder.index');
+        });
     });
 });

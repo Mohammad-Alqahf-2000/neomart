@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('status', 50)->default('PEN')->comment("P:Paided , PEN: Pending ,C: Cancelled , D :delivered ,R:refund");
-            $table->decimal('total_amount')->default(0);
+            $table->string('status', 50)->default('pending')->comment("pending ,processing ,confirmed ,shipping ,cancelled,completed , delivered ,refund");
+            $table->decimal('total_amount');
             $table->text('note')->nullable();
-            $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->constrained('users', 'id')->restrictOnDelete();
+            $table->timestamp("paid_at")->nullable();
+            $table->string('payment_status')->default("unpaid")->comment("unpaid , pending , paid , partoally_paid , failed , refunded , partially_refunded", "canceled");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

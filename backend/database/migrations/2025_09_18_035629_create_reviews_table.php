@@ -16,7 +16,7 @@ return new class extends Migration
             $table->decimal('rating', 3, 1);
             $table->text('comment');
             $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('order_item_id')->constrained('order_items', 'id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('store_order_item_id')->constrained('store_order_items', 'id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

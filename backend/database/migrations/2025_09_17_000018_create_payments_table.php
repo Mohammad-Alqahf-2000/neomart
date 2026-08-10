@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->decimal('amount');
             $table->string('method', 150);
-            $table->string('status', 50)->comment('P:paide , PEN:pending , : Cancelled ,R:refund');
-            $table->string('type', 50)->comment('P:paided , R:Refund');
+            $table->string('status', 50)->default("unpaid")->comment("unpaid , pending , paid , partoally_paid , failed , refunded , partially_refunded", "canceled");
             $table->unsignedBigInteger('transaction_id');
-            $table->foreignId('order_id')->constrained('orders', 'id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->timestamp("paid_at");
+            $table->foreignId('store_order_id')->constrained('store_orders', 'id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

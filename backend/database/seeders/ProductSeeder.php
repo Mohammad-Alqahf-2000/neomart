@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ProductTypeEnum;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Product;
@@ -43,7 +44,7 @@ class ProductSeeder extends Seeder
                 'ar_description' => $product[3],
                 'stock' => rand(0, 100),
                 'price' => rand(1, 200),
-                'type' => fake()->randomElement(['N', 'U']),
+                'type' => fake()->randomElement(ProductTypeEnum::cases()),
                 'availability' => fake()->boolean(),
                 'sub_category_id' => $product[4],
                 'brand_id' => $product[5],
